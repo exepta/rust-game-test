@@ -1,0 +1,9 @@
+[package]
+name = "rust-game-test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = {version = "0.14.2" }
+wgpu = "22.1.0"
+wgpu-hal = "^22.0.0"
