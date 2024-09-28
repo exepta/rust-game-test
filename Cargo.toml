@@ -7,3 +7,4 @@ edition = "2021"
 bevy = {version = "0.14.2" }
 wgpu = "22.1.0"
 wgpu-hal = "^22.0.0"
+rand = "0.8.5"
