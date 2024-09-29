@@ -3,8 +3,19 @@ name = "rust-game-test"
 version = "0.1.0"
 edition = "2021"
 
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
 [dependencies]
-bevy = {version = "0.14.2" }
+# Engine
+bevy = {version = "0.14.2"}
+bevy-inspector-egui = "0.26.0"
 wgpu = "22.1.0"
 wgpu-hal = "^22.0.0"
+
+# Utils
 rand = "0.8.5"
+serde = { version = "1.0.210", features = ["derive"] }
