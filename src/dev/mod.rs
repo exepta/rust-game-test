@@ -33,7 +33,7 @@ fn generate_setup(mut commands: Commands,
 
     //Ground
     commands.spawn(PbrBundle {
-        mesh: meshes.add(Plane3d::default().mesh().size(10.0, 10.0)),
+        mesh: meshes.add(Plane3d::default().mesh().size(20.0, 20.0)),
         material: materials.add(Color::srgb(0.3, 0.5, 0.3)),
         ..default()
     })
@@ -43,9 +43,9 @@ fn generate_setup(mut commands: Commands,
     let default_color = materials.add(Color::srgba(0.3, 0.3, 0.3, 0.2));
     let selected_color = materials.add(Color::srgba(0.8, 0.0, 0.3, 0.8));
 
-    //Socket
+    //Socket 01
     commands.spawn(SpatialBundle::from_transform(Transform::from_xyz(0.0, 0.5, 0.0)))
-        .insert(Name::new("Socket"))
+        .insert(Name::new("Socket-01"))
         .insert(meshes.add(Capsule3d::new(0.2, 0.4)))
         .insert(Highlight {
             hovered: Some(Fixed(selected_color.clone())),
@@ -57,6 +57,28 @@ fn generate_setup(mut commands: Commands,
         .insert(PickableBundle::default())
         .with_children(|commands| {
             //Tower
+            commands.spawn(PbrBundle  {
+                mesh: meshes.add(Cuboid::new(0.5, 0.12, 0.5)),
+                material: materials.add(Color::srgb_u8(100, 100, 110)),
+                transform: Transform::from_xyz(0.0, -0.5, 0.0),
+                ..default()
+            });
+        });
+
+    //Socket02
+    commands.spawn(SpatialBundle::from_transform(Transform::from_xyz(10.0, 0.5, 0.0)))
+        .insert(Name::new("Socket-02"))
+        .insert(meshes.add(Capsule3d::new(0.2, 0.4)))
+        .insert(Highlight {
+            hovered: Some(Fixed(selected_color.clone())),
+            pressed: Some(Fixed(selected_color.clone())),
+            selected: Some(Fixed(selected_color.clone())),
+        })
+        .insert(default_color.clone())
+        .insert(NotShadowCaster)
+        .insert(PickableBundle::default())
+        .with_children(|commands| {
+            //Plate
             commands.spawn(PbrBundle  {
                 mesh: meshes.add(Cuboid::new(0.5, 0.12, 0.5)),
                 material: materials.add(Color::srgb_u8(100, 100, 110)),

@@ -8,8 +8,8 @@ use bevy_mod_picking::DefaultPickingPlugins;
 use crate::cams::camera_spec::{spawn_camera, update_camera_controls};
 use crate::dev::DebugPlugin;
 
-pub const WIDTH : f32 = 1270.0;
-pub const HEIGHT : f32 = 720.0;
+pub const WIDTH : f32 = 1920.0;
+pub const HEIGHT : f32 = 1080.0;
 
 fn main() {
     initialize();
