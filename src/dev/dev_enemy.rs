@@ -1,6 +1,6 @@
 use bevy::math::FloatOrd;
 use bevy::prelude::*;
-
+use bevy_mod_picking::prelude::PickSelection;
 use crate::dev::dev_bullet::{Bullet, Lifetime};
 use crate::dev::dev_target::Target;
 
@@ -16,16 +16,16 @@ pub struct BulletTowerPlugin;
 impl Plugin for BulletTowerPlugin {
     fn build(&self, app: &mut App) {
         app.register_type::<TrapTower>()
-            .add_systems(Update, system_tower_shooting);
+            .add_systems(Update, (update_tower_shooting, build_tower));
     }
 }
 
-pub fn system_tower_shooting(mut commands: Commands,
-                           mut meshes: ResMut<Assets<Mesh>>,
-                           mut materials: ResMut<Assets<StandardMaterial>>,
-                           mut towers: Query<(Entity, &mut TrapTower, &GlobalTransform)>,
-                           targets: Query<&GlobalTransform, With<Target>>,
-                           time: Res<Time>) {
+pub fn update_tower_shooting(mut commands: Commands,
+                             mut meshes: ResMut<Assets<Mesh>>,
+                             mut materials: ResMut<Assets<StandardMaterial>>,
+                             mut towers: Query<(Entity, &mut TrapTower, &GlobalTransform)>,
+                             targets: Query<&GlobalTransform, With<Target>>,
+                             time: Res<Time>) {
     for (tower_en, mut tower, transform) in towers.iter_mut() {
         tower.shooting_timer.tick(time.delta());
         if tower.shooting_timer.just_finished() {
@@ -50,10 +50,42 @@ pub fn system_tower_shooting(mut commands: Commands,
                         timer: Timer::from_seconds(3., TimerMode::Once),
                     }).insert(Bullet {
                         direction,
-                        speed: 6.0,
+                        speed: 8.0,
                     }).insert(Name::new("Bullet"));
                 });
             }
         }
     }
+}
+
+pub fn build_tower(mut commands: Commands,
+                   selections: Query<(Entity, &PickSelection, &Transform)>,
+                   mut meshes: ResMut<Assets<Mesh>>,
+                   mut materials: ResMut<Assets<StandardMaterial>>,
+                   mouse: Res<ButtonInput<MouseButton>>) {
+    if mouse.just_pressed(MouseButton::Left) {
+        for (entity, selection, transform) in selections.iter() {
+            if selection.is_selected {
+                commands.entity(entity).despawn_recursive();
+                spawn_normal_tower(&mut commands, &mut meshes, &mut materials, transform.translation);
+            }
+        }
+    }
+}
+
+pub fn spawn_normal_tower(commands: &mut Commands,
+                          meshes: &mut ResMut<Assets<Mesh>>,
+                          materials: &mut ResMut<Assets<StandardMaterial>>,
+                          position: Vec3) -> Entity {
+    commands.spawn(PbrBundle  {
+        mesh: meshes.add(Cuboid::new(0.5, 1.0, 0.5)),
+        material: materials.add(Color::srgb_u8(30, 30, 40)),
+        transform: Transform::from_translation(position),
+        ..default()
+    })
+        .insert(Name::new("TrapTower"))
+        .insert(TrapTower {
+            shooting_timer: Timer::from_seconds(0.1, TimerMode::Repeating),
+            bullet_offset: Vec3::new(0.0, 0.5, 0.6)
+        }).id()
 }

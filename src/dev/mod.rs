@@ -1,7 +1,11 @@
 use bevy::app::App;
+use bevy::pbr::NotShadowCaster;
 use bevy::prelude::*;
+use bevy_mod_picking::highlight::Highlight;
+use bevy_mod_picking::highlight::HighlightKind::Fixed;
+use bevy_mod_picking::PickableBundle;
 use crate::dev::dev_bullet::BulletPlugin;
-use crate::dev::dev_enemy::{BulletTowerPlugin, TrapTower};
+use crate::dev::dev_enemy::{BulletTowerPlugin};
 use crate::dev::dev_target::{Health, Target, TargetPlugin};
 
 pub mod dev_enemy;
@@ -29,24 +33,36 @@ fn generate_setup(mut commands: Commands,
 
     //Ground
     commands.spawn(PbrBundle {
-        mesh: meshes.add(Plane3d::default().mesh().size(5.0, 5.0)),
+        mesh: meshes.add(Plane3d::default().mesh().size(10.0, 10.0)),
         material: materials.add(Color::srgb(0.3, 0.5, 0.3)),
         ..default()
     })
         .insert(Ground)
         .insert(Name::new("Ground"));
 
-    //Tower
-    commands.spawn(PbrBundle  {
-        mesh: meshes.add(Cuboid::new(0.5, 1.0, 0.5)),
-        material: materials.add(Color::srgb_u8(30, 30, 40)),
-        transform: Transform::from_xyz(0.0, 0.5, 0.0),
-        ..default()
-    })
-        .insert(Name::new("TrapTower"))
-        .insert(TrapTower {
-            shooting_timer: Timer::from_seconds(0.3, TimerMode::Repeating),
-            bullet_offset: Vec3::new(0.0, 0.5, 0.6)
+    let default_color = materials.add(Color::srgba(0.3, 0.3, 0.3, 0.2));
+    let selected_color = materials.add(Color::srgba(0.8, 0.0, 0.3, 0.8));
+
+    //Socket
+    commands.spawn(SpatialBundle::from_transform(Transform::from_xyz(0.0, 0.5, 0.0)))
+        .insert(Name::new("Socket"))
+        .insert(meshes.add(Capsule3d::new(0.2, 0.4)))
+        .insert(Highlight {
+            hovered: Some(Fixed(selected_color.clone())),
+            pressed: Some(Fixed(selected_color.clone())),
+            selected: Some(Fixed(selected_color.clone())),
+        })
+        .insert(default_color.clone())
+        .insert(NotShadowCaster)
+        .insert(PickableBundle::default())
+        .with_children(|commands| {
+            //Tower
+            commands.spawn(PbrBundle  {
+                mesh: meshes.add(Cuboid::new(0.5, 0.12, 0.5)),
+                material: materials.add(Color::srgb_u8(100, 100, 110)),
+                transform: Transform::from_xyz(0.0, -0.5, 0.0),
+                ..default()
+            });
         });
 
     //Player (Placeholder)
@@ -57,7 +73,7 @@ fn generate_setup(mut commands: Commands,
         ..default()
     })
         .insert(Target{speed: 0.25})
-        .insert(Health{value: 130})
+        .insert(Health{value: 650})
         .insert(Name::new("Debug Player"));
 
     //Light

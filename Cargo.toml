@@ -13,6 +13,7 @@ opt-level = 3
 # Engine
 bevy = {version = "0.14.2"}
 bevy-inspector-egui = "0.26.0"
+bevy_mod_picking = "0.20.1"
 wgpu = "22.1.0"
 wgpu-hal = "^22.0.0"
 
