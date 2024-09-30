@@ -1,8 +1,8 @@
 use bevy::math::FloatOrd;
 use bevy::prelude::*;
 
-use crate::debug::deb_bullet::{Bullet, Lifetime};
-use crate::debug::deb_target::Target;
+use crate::dev::dev_bullet::{Bullet, Lifetime};
+use crate::dev::dev_target::Target;
 
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]

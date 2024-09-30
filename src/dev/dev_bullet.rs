@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use crate::debug::deb_target::{Health, Target};
+use crate::dev::dev_target::{Health, Target};
 
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]

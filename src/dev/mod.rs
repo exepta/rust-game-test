@@ -1,12 +1,12 @@
 use bevy::app::App;
 use bevy::prelude::*;
-use crate::debug::deb_bullet::BulletPlugin;
-use crate::debug::deb_enemy::{BulletTowerPlugin, TrapTower};
-use crate::debug::deb_target::{Health, Target, TargetPlugin};
+use crate::dev::dev_bullet::BulletPlugin;
+use crate::dev::dev_enemy::{BulletTowerPlugin, TrapTower};
+use crate::dev::dev_target::{Health, Target, TargetPlugin};
 
-pub mod deb_enemy;
-pub mod deb_target;
-mod deb_bullet;
+pub mod dev_enemy;
+pub mod dev_target;
+mod dev_bullet;
 
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)]
