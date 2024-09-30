@@ -4,7 +4,7 @@ mod debug;
 use bevy::prelude::*;
 use bevy::window::WindowResolution;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
-use crate::camera::spawn_camera;
+use crate::camera::{spawn_camera};
 use crate::debug::DebugPlugin;
 
 pub const WIDTH : f32 = 1270.0;
