@@ -42,15 +42,15 @@ pub fn system_tower_shooting(mut commands: Commands,
                 commands.entity(tower_en).with_children(|commands| {
                     //Bullet
                     commands.spawn(PbrBundle {
-                        mesh: meshes.add(Cuboid::new(0.1, 0.1, 0.1)),
+                        mesh: meshes.add(Cuboid::new(0.05, 0.05, 0.05)),
                         material: materials.add(Color::srgb_u8(255, 0, 0)),
                         transform: Transform::from_translation(tower.bullet_offset),
                         ..default()
                     }).insert(Lifetime {
-                        timer: Timer::from_seconds(10., TimerMode::Once),
+                        timer: Timer::from_seconds(3., TimerMode::Once),
                     }).insert(Bullet {
                         direction,
-                        speed: 2.0,
+                        speed: 6.0,
                     }).insert(Name::new("Bullet"));
                 });
             }

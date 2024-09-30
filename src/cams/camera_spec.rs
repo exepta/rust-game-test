@@ -13,6 +13,8 @@ pub fn update_camera_controls(keyboard: Res<ButtonInput<KeyCode>>,
     let mut camera = camera_query.single_mut();
     let forward = camera.forward().as_vec3();
 
+    let up = camera.up().as_vec3();
+
     let mut left = camera.left().as_vec3();
     left.y = 0.0;
     left = left.normalize();
@@ -33,6 +35,14 @@ pub fn update_camera_controls(keyboard: Res<ButtonInput<KeyCode>>,
 
     if keyboard.pressed(KeyCode::KeyD) {
         camera.translation -= left * time.delta_seconds() * speed;
+    }
+
+    if keyboard.pressed(KeyCode::Space) {
+        camera.translation += up * time.delta_seconds() * speed;
+    }
+
+    if keyboard.pressed(KeyCode::ShiftLeft) {
+        camera.translation -= up * time.delta_seconds() * speed;
     }
 
     if keyboard.pressed(KeyCode::KeyQ) {

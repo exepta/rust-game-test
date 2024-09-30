@@ -45,7 +45,7 @@ fn generate_setup(mut commands: Commands,
     })
         .insert(Name::new("TrapTower"))
         .insert(TrapTower {
-            shooting_timer: Timer::from_seconds(1.0, TimerMode::Repeating),
+            shooting_timer: Timer::from_seconds(0.3, TimerMode::Repeating),
             bullet_offset: Vec3::new(0.0, 0.5, 0.6)
         });
 
@@ -56,8 +56,8 @@ fn generate_setup(mut commands: Commands,
         transform: Transform::from_xyz(- 2.0, 0.2, 1.5),
         ..default()
     })
-        .insert(Target{speed: 0.3})
-        .insert(Health{value: 5})
+        .insert(Target{speed: 0.25})
+        .insert(Health{value: 130})
         .insert(Name::new("Debug Player"));
 
     //Light
